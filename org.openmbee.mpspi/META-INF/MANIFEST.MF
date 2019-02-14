@@ -7,14 +7,15 @@ Bundle-Version: 0.0.1.qualifier
 Bundle-Vendor: OpenMBEE
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.openmbee.mpspi,
+ org.openmbee.mpspi.discovery,
  org.openmbee.mpspi.exceptions,
+ org.openmbee.mpspi.log,
  org.openmbee.mpspi.modifier,
  org.openmbee.mpspi.svc,
  org.openmbee.mpspi.util
 Bundle-Activator: org.openmbee.mpspi.Activator
 Require-Bundle: org.eclipse.emf.ecore;bundle-version="2.15.0",
- org.eclipse.osgi;bundle-version="3.13.100",
- org.eclipse.core.runtime;bundle-version="3.15.0"
+ org.eclipse.osgi;bundle-version="3.13.100"
 Bundle-ActivationPolicy: lazy
 Service-Component: OSGi-INF/service.xml
 

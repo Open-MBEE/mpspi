@@ -26,7 +26,7 @@ public class MPAdapterRegistry implements ServiceListener {
 
     private List<MPFactory> mpFactories = new ArrayList<MPFactory>();
 
-    private static final String SERVICE_LISTENER_FILTER = Constants.OBJECTCLASS + "=" + MPFactory.class.getName();
+    private static final String SERVICE_LISTENER_FILTER = "(" + Constants.OBJECTCLASS + "=" + MPFactory.class.getName() + ")";
 
     private void initialize() {
         try {
