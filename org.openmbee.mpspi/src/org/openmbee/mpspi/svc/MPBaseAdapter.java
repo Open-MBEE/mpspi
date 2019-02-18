@@ -26,12 +26,9 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
     }
 
 	@Override
-	public EObject getRootDataSource() throws MPException {
+	public List<EObject> getRoots() throws MPException {
         Resource r = checkResource();
-        List<EObject> eos = r.getContents();
-        if (eos == null) return null;
-        if (eos.size() == 0) return null;
-        return eos.get(0);
+        return r.getContents();
 	}
 
 

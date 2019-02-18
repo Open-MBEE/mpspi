@@ -79,7 +79,7 @@ public class MPDefaultAdapter extends MPBaseAdapter {
 	}
 
 	@Override
-	public List<EObject> getDataSource(EClassifier classifier) throws MPException {
+	public List<EObject> getWithType(EClassifier classifier) throws MPException {
         checkResource();
 		// TODO Need to work
 		return null;

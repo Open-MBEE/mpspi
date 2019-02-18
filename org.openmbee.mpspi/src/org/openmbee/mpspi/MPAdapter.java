@@ -59,9 +59,9 @@ public interface MPAdapter {
 
     void unload() throws MPException;
 
-    EObject getRootDataSource() throws MPException;
+    List<EObject> getRoots() throws MPException;
 
-    List<EObject> getDataSource(EClassifier classifier) throws MPException;
+    List<EObject> getWithType(EClassifier classifier) throws MPException;
 
     void delete(EObject eObj) throws MPException;
 
