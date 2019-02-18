@@ -28,13 +28,12 @@ public class MPDefaultAdapter extends MPBaseAdapter {
 	private Resource resource;
 
 	@Override
-	public Resource load(URI uri, Map<LoadOption, Object> option) throws MPException {
+	public void load(URI uri, Map<LoadOption, Object> option) throws MPException {
 		this.resourceSet = new ResourceSetImpl();
 		this.resource = resourceSet.getResource(uri, true);
 		if (this.resource == null) {
 			throw new MPAccessException("Failed to load Model: " + uri);
 		}
-		return this.resource;
 	}
 
 	@Override

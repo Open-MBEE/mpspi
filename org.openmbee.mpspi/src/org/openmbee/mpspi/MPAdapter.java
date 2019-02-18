@@ -20,7 +20,7 @@ public interface MPAdapter {
         LOAD_OPTION3
     }
 
-    Resource load(URI uri, Map<LoadOption, Object> option) throws MPException;
+    void load(URI uri, Map<LoadOption, Object> option) throws MPException;
 
     public enum ReloadResult {
     	UNSUPPORTED,
