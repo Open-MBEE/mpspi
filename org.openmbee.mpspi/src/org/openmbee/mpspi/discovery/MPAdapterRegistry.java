@@ -96,7 +96,7 @@ public class MPAdapterRegistry implements ServiceListener {
             }
             String modelURIPattern = target.getModelURIPattern();
             if ((modelURIStr != null) && (modelURIPattern != null)) {
-                if (!nsURIStr.matches(modelURIPattern)) continue;
+                if (!modelURIStr.matches(modelURIPattern)) continue;
             }
             factory = f;
             priority = p;

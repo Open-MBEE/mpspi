@@ -22,27 +22,35 @@ public class TestMPSPI {
 		discovery = Activator.getDefault().newDiscovery();
 	}
 
-    private MPAdapter open() throws Exception {
-		MPAdapter adapter = discovery.newAdapter(null, EcorePackage.eNS_URI, null, null);
-		assertNotNull(adapter);
+    private MPAdapter openDefault() throws Exception {
 		URI uri = URI.createURI("platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore");
+		MPAdapter adapter = discovery.newAdapter(null, EcorePackage.eNS_URI, uri, null);
+		assertNotNull(adapter);
 		adapter.load(uri, null);
         return adapter;
     }
 
+    @Test
+    public void testMPTest() throws Exception {
+		URI uri = URI.createURI("platform:/plugin/org.openmbee.mpspi.test/model/simple.mpspi.test");
+		MPAdapter adapter = discovery.newAdapter(null, "http://www.openmbee.org/mpspi/test", uri, null);
+        assertTrue(adapter instanceof MPTestAdapter);
+    }
 
 	@Test
 	public void testOpenEcore() throws Exception {
-        open();
+        openDefault();
 	}
 
 	@Test
     public void testGet() throws Exception {
-        MPAdapter adapter = open();
+        MPAdapter adapter = openDefault();
         EObject root = adapter.getRoots().get(0);
         assertTrue(root instanceof EPackage);
         String name = (String) adapter.get(root, EcorePackage.eINSTANCE.getENamedElement_Name());
         assertEquals(name, "ecore");
     }
+
+    
 
 }
