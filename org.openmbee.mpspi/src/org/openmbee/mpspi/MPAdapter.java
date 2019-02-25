@@ -12,6 +12,11 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.openmbee.mpspi.exceptions.MPException;
 
+/**
+ * MPAdapter defines the adapter interface for users to access EMF models.
+ * 
+ * @author himi
+ */
 public interface MPAdapter {
     public enum LoadOption {
         LOCAL,
@@ -20,6 +25,13 @@ public interface MPAdapter {
         LOAD_OPTION3
     }
 
+    /**
+     * Load the model of uri.
+     * 
+     * @param uri
+     * @param option
+     * @throws MPException
+     */
     void load(URI uri, Map<LoadOption, Object> option) throws MPException;
 
     public enum ReloadResult {
@@ -29,17 +41,26 @@ public interface MPAdapter {
     }
 
     /**
-     * reload the resource.
+     * reload the model
      * @throws MPException
-     * @throws IllegalStateException if another resource is already loaded
      */
     ReloadResult reload() throws MPException;
 
     public interface UndoResult {
         // TODO
     }
+
+    /**
+     * reload the last modification
+     * @throws MPException
+     */
     UndoResult undo() throws MPException;
 
+    /**
+     * Return the resource that has been loaded.
+     *
+     * @throws MPException
+     */
     Resource getResource();
 
     EPackage.Registry getPackageRegistry();
