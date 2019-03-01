@@ -6,10 +6,10 @@
   <parent>
     <groupId>org.openmbee.mpspi</groupId>
     <artifactId>MPSPI</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${mpspi.version}</version>
   </parent>
   <groupId>org.openmbee.mpspi</groupId>
   <artifactId>org.openmbee.mpspi</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>${mpspi.version}</version>
   <packaging>eclipse-plugin</packaging>
 </project>

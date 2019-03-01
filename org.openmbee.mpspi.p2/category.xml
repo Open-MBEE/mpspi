@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-  <bundle id="org.openmbee.mpspi" />
-  <bundle id="org.openmbee.mpspi.source" />
+  <bundle id="org.openmbee.mpspi">
+    <category name="org.openmbee.mpspi.category.id"/>
+  </bundle>
+  <bundle id="org.openmbee.mpspi.source">
+    <category name="org.openmbee.mpspi.category.id"/>
+  </bundle>
+  <category-def name="org.openmbee.mpspi.category.id" label="OpenMBEE MPSPI Core">
+    <description>OpenMBEE MPSPI Core Bundles</description>
+  </category-def>
 </site>

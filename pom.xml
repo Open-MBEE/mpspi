@@ -2,17 +2,18 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 	 xmlns="http://maven.apache.org/POM/4.0.0"
 	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <properties>
+    <tycho.version>1.2.0</tycho.version>
+    <maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
+    <mpspi.version>0.0.2-SNAPSHOT</mpspi.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.openmbee.mpspi</groupId>
   <artifactId>MPSPI</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>${mpspi.version}</version>
   <packaging>pom</packaging>
-
-  <properties>
-    <tycho.version>1.2.0</tycho.version>
-    <mpspi.version>0.0.1-SNAPSHOT</mpspi.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
 
   <repositories>
     <repository>
