@@ -80,7 +80,7 @@ public interface MPAdapter {
 
     void unload() throws MPException;
 
-    List<EObject> getRoots() throws MPException;
+    List<EObject> getRoots(String name) throws MPException;
 
     List<EObject> getWithType(EClassifier classifier) throws MPException;
 

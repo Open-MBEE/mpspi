@@ -7,6 +7,8 @@ public interface MPConstants {
     int PRIORITY_FALLBACK = 0;
 
     String ANNOTATION_VIRTUAL_ELEMENT = "http://www.openmbee.org/mpspi/1.0/virtualElement"; //$NON-NLS-1$
-
-
+    
+    String ROOT_NAME = "Root";
+    
+    String ROOTS_NAME = "Roots";
 }
