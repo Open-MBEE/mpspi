@@ -10,6 +10,7 @@ import org.eclipse.emf.common.notify.impl.NotificationImpl;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.openmbee.mpspi.MPNotificationReceiver;
 
 public abstract class MPAbstractNotificationModifier extends AdapterImpl implements MPNotificationModifier {
     private final EStructuralFeature actualFeature;
@@ -56,7 +57,7 @@ public abstract class MPAbstractNotificationModifier extends AdapterImpl impleme
         int size = adapters.size();
         for (int i = 0; i < size; i++) {
             Adapter a = adapters.get(i);
-            if (a instanceof MPModifiedNotificationReceiver) {
+            if (a instanceof MPNotificationReceiver) {
                 a.notifyChanged(msg);
             }
         }

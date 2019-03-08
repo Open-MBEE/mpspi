@@ -1,6 +1,6 @@
 package org.openmbee.mpspi.exceptions;
 
-public class MPNoRootNameException extends MPFatalException {
+public class MPNoRootNameException extends MPFailureException {
 
 	/**
 	 * 

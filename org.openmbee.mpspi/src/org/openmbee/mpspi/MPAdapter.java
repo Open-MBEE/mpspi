@@ -1,5 +1,6 @@
 package org.openmbee.mpspi;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +34,8 @@ public interface MPAdapter {
      * @throws MPException
      */
     void load(URI uri, Map<LoadOption, Object> option) throws MPException;
+
+    Map<LoadOption, Object> DEFAULT_LOAD_OPTION = new HashMap<LoadOption, Object>(0);
 
     public enum ReloadResult {
     	UNSUPPORTED,

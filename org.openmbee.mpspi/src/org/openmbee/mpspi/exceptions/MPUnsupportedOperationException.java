@@ -1,6 +1,6 @@
 package org.openmbee.mpspi.exceptions;
 
-public class MPUnsupportedOperationException extends MPFatalException {
+public class MPUnsupportedOperationException extends MPFailureException {
 	/**
 	 * 
 	 */
