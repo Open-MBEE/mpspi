@@ -21,6 +21,7 @@ import org.osgi.framework.ServiceEvent;
 import org.osgi.framework.ServiceListener;
 import org.osgi.framework.ServiceReference;
 
+
 public class MPAdapterRegistry implements ServiceListener {
     private final BundleContext context;
 
@@ -30,21 +31,21 @@ public class MPAdapterRegistry implements ServiceListener {
 
     private void initialize() {
         try {
-			Collection<ServiceReference<MPFactory>> srs = context.getServiceReferences(MPFactory.class, null);
-			for (ServiceReference<MPFactory> sr : srs) {
-			    MPFactory mpf = context.getService(sr);
-			    mpFactories.add(mpf);
-			}
-		} catch (InvalidSyntaxException e) {
-			// TODO Logging
-			e.printStackTrace();
-		}
+            Collection<ServiceReference<MPFactory>> srs = context.getServiceReferences(MPFactory.class, null);
+            for (ServiceReference<MPFactory> sr : srs) {
+                MPFactory mpf = context.getService(sr);
+                mpFactories.add(mpf);
+            }
+        } catch (InvalidSyntaxException e) {
+            // TODO Logging
+            e.printStackTrace();
+        }
         try {
-			context.addServiceListener(this, SERVICE_LISTENER_FILTER);
-		} catch (InvalidSyntaxException e) {
-			// TODO Logging
-			e.printStackTrace();
-		}
+            context.addServiceListener(this, SERVICE_LISTENER_FILTER);
+        } catch (InvalidSyntaxException e) {
+            // TODO Logging
+            e.printStackTrace();
+        }
     }
 
     public static MPAdapterRegistry newInstance(BundleContext context) {
@@ -57,8 +58,8 @@ public class MPAdapterRegistry implements ServiceListener {
         this.context = context;
     }
 
-	@Override
-	public void serviceChanged(ServiceEvent event) {
+    @Override
+    public void serviceChanged(ServiceEvent event) {
         ServiceReference<?> sr = event.getServiceReference();
         Object o = context.getService(sr);
         if (!(o instanceof MPFactory)) return;
@@ -71,7 +72,7 @@ public class MPAdapterRegistry implements ServiceListener {
             mpFactories.remove(mpf);
             break;
         }
-	}
+    }
 
     private static String uriToStr(URI uri) {
         if (uri == null) return null;
