@@ -65,7 +65,7 @@ public class MPDefaultAdapter extends MPBaseAdapter {
 		try {
 			r.save(null);
 		} catch (IOException e) {
-			throw new MPAccessException("Failed to save model file: " + resource.getURI().toString(), e);
+			throw new MPAccessException("Failed to save the model to: " + r.getURI().toString(), e);
 		}
     }
 

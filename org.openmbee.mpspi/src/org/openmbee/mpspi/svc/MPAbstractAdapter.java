@@ -2,6 +2,7 @@ package org.openmbee.mpspi.svc;
 
 import java.util.Map;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -23,7 +24,7 @@ public abstract class MPAbstractAdapter implements MPAdapter {
         return EPackage.Registry.INSTANCE;
     }
 
-    private static URI checkSaveAs(Map<SaveOption, Object> option) {
+    public static URI checkSaveAs(Map<SaveOption, Object> option) {
         if (option == null) return null;
         Object o = option.get(SaveOption.SAVE_URI);
         if (o == null) return null;
@@ -31,7 +32,7 @@ public abstract class MPAbstractAdapter implements MPAdapter {
         throw new IllegalArgumentException("The value of SaveOption.SAVE_URI must be URI: " + o);
     }
 
-    private static boolean checkSaveCopyAs(Map<SaveOption, Object> option) {
+    public static boolean checkSaveCopyAs(Map<SaveOption, Object> option) {
         if (option == null) return false;
         Object o = option.get(SaveOption.SAVE_COPY_AS);
         if (o == null) return false;
