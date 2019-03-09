@@ -49,7 +49,7 @@ public class MPTestAdapter implements MPAdapter {
 	}
 
 	@Override
-	public List<EObject> getRoots() throws MPException {
+	public List<EObject> getRoots(String name) throws MPException {
 		return null;
 	}
 

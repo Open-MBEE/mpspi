@@ -12,6 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openmbee.mpspi.Activator;
 import org.openmbee.mpspi.MPAdapter;
+import org.openmbee.mpspi.MPConstants;
 import org.openmbee.mpspi.discovery.MPAdapterRegistry;
 
 public class TestMPSPI {
@@ -45,7 +46,7 @@ public class TestMPSPI {
 	@Test
     public void testGet() throws Exception {
         MPAdapter adapter = openDefault();
-        EObject root = adapter.getRoots().get(0);
+        EObject root = adapter.getRoots(MPConstants.ROOT_NAME).get(0);
         assertTrue(root instanceof EPackage);
         String name = (String) adapter.get(root, EcorePackage.eINSTANCE.getENamedElement_Name());
         assertEquals(name, "ecore");
