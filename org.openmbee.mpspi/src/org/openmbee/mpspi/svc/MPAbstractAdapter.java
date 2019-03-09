@@ -23,6 +23,22 @@ public abstract class MPAbstractAdapter implements MPAdapter {
         return EPackage.Registry.INSTANCE;
     }
 
+    private static URI checkSaveAs(Map<SaveOption, Object> option) {
+        if (option == null) return null;
+        Object o = option.get(SaveOption.SAVE_URI);
+        if (o == null) return null;
+        if (o instanceof URI) return (URI) o;
+        throw new IllegalArgumentException("The value of SaveOption.SAVE_URI must be URI: " + o);
+    }
+
+    private static boolean checkSaveCopyAs(Map<SaveOption, Object> option) {
+        if (option == null) return false;
+        Object o = option.get(SaveOption.SAVE_COPY_AS);
+        if (o == null) return false;
+        if (o instanceof Boolean) return ((Boolean) o).booleanValue();
+        throw new IllegalArgumentException("The value of SaveOption.SAVE_COPY_AS must be Boolean: " + o);
+    }
+
     /**
      * Initialize `eObj' with `inits'.
      * That is, for each feature and value of 'inits', do eObj.eSet(feature, value) even if 

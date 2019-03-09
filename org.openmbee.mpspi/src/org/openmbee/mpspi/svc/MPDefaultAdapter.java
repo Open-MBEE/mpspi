@@ -61,14 +61,31 @@ public class MPDefaultAdapter extends MPBaseAdapter {
 		return resource;
 	}
 
-	@Override
-	public void save(Map<SaveOption, Object> option) throws MPException {
-        Resource r = checkResource();
+    private static void saveInternal(Resource r) throws MPException {
 		try {
 			r.save(null);
 		} catch (IOException e) {
 			throw new MPAccessException("Failed to save model file: " + resource.getURI().toString(), e);
 		}
+    }
+
+	@Override
+	public void save(Map<SaveOption, Object> option) throws MPException {
+        Resource r = checkResource();
+        URI origURI = r.getURI();
+        URI uri = checkSaveAs(option);
+        if (!origURI.equals(uri)) {
+            try {
+                r.setURI(uri);
+                saveInternal(r);
+            } finally {
+                if (checkSaveCopyAs(option)) {
+                    r.setURI(origURI);
+                }
+            }
+        } else {
+            saveInternal(r);
+        }
 	}
 
 	@Override
