@@ -66,6 +66,12 @@ public interface MPAdapter {
      */
     Resource getResource();
 
+    /**
+     * Return EPackage.Registry used by the adapter.
+     * Service consumers need to use the returned registry to obtain Ecore.
+     *
+     * @throws MPException
+     */
     EPackage.Registry getPackageRegistry();
 
     public enum SaveOption {
@@ -79,6 +85,11 @@ public interface MPAdapter {
         SAVE_OPTION3
     }
 
+    /**
+     * Save the model.
+     *
+     * @throws MPException
+     */
     void save(Map<SaveOption, Object> option) throws MPException;
     Map<SaveOption, Object> DEFAULT_SAVE_OPTION = Collections.emptyMap();
 
