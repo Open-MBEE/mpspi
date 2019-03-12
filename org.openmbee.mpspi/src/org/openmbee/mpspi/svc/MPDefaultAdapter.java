@@ -74,7 +74,9 @@ public class MPDefaultAdapter extends MPBaseAdapter {
         Resource r = checkResource();
         URI origURI = r.getURI();
         URI uri = checkSaveAs(option);
-        if (!origURI.equals(uri)) {
+        if ((uri == null) || (uri.equals(origURI))) {
+            saveInternal(r);
+        } else {
             try {
                 r.setURI(uri);
                 saveInternal(r);
@@ -83,8 +85,6 @@ public class MPDefaultAdapter extends MPBaseAdapter {
                     r.setURI(origURI);
                 }
             }
-        } else {
-            saveInternal(r);
         }
 	}
 
