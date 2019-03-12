@@ -10,6 +10,7 @@ import java.util.Set;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.openmbee.mpspi.MPConstants;
@@ -18,6 +19,7 @@ import org.openmbee.mpspi.exceptions.MPIllegalStateException;
 import org.openmbee.mpspi.exceptions.MPNoRootNameException;
 import org.openmbee.mpspi.exceptions.MPUnsupportedOperationException;
 import org.openmbee.mpspi.modifier.MPModifier;
+import org.openmbee.mpspi.util.MPUtil;
 
 public abstract class MPBaseAdapter extends MPAbstractAdapter {
     protected Resource checkResource() throws MPIllegalStateException {
@@ -166,6 +168,7 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
         if (m != null) {
             m.add(eObj, feature, value, index);
         } else {
+            if (MPUtil.isVirtual(feature)) return;
             doAdd(eObj, feature, value, index);
         }
 	}
@@ -206,6 +209,7 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
         if (m != null) {
             m.remove(eObj, feature, value);
         } else {
+            if (MPUtil.isVirtual(feature)) return;
             doRemove(eObj, feature, value);
         }
 	}
@@ -216,16 +220,22 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
         if (m != null) {
             m.removeByIdx(eObj, feature, index);
         } else {
+            if (MPUtil.isVirtual(feature)) return;
             doRemoveByIdx(eObj, feature, index);
         }
 	}
 
+    private static boolean isContainementReference(EStructuralFeature feature) {
+        return ((feature instanceof EReference) && ((EReference) feature).isContainment());
+    }
+	
 	@Override
 	public void set(EObject eObj, EStructuralFeature feature, Object value) throws MPException {
         MPModifier m = mpModifierMap.get(feature);
         if (m != null) {
             m.set(eObj, feature, value);
         } else {
+            if (MPUtil.isVirtual(feature)) return;
             doSet(eObj, feature, value);
         }
 	}
@@ -236,6 +246,7 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
         if (m != null) {
             m.unset(eObj, feature);
         } else {
+            if (MPUtil.isVirtual(feature)) return;
             doUnset(eObj, feature);
         }
 	}
