@@ -25,12 +25,17 @@ public class Activator implements BundleActivator {
         return mpAdapterRegistry.newDiscovery();
     }
 
+    public static void registerMPFactory(BundleContext context, MPFactory factory) {
+        context.registerService(MPFactory.class, factory, null);
+    }
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
 		Activator.plugin = this;
+        registerMPFactory(context, new org.openmbee.mpspi.svc.MPDefaultFactory());
         this.mpAdapterRegistry = MPAdapterRegistry.newInstance(context);
 	}
 
