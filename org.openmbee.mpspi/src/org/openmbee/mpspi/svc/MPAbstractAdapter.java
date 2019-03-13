@@ -1,7 +1,10 @@
 package org.openmbee.mpspi.svc;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -10,11 +13,39 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.openmbee.mpspi.MPAdapter;
+import org.openmbee.mpspi.MPConstants;
 import org.openmbee.mpspi.exceptions.MPException;
+import org.openmbee.mpspi.exceptions.MPIllegalStateException;
 import org.openmbee.mpspi.exceptions.MPInstantiateException;
+import org.openmbee.mpspi.exceptions.MPNoRootNameException;
 import org.openmbee.mpspi.util.MPUtil;
 
 public abstract class MPAbstractAdapter implements MPAdapter {
+    protected Resource checkResource() throws MPIllegalStateException {
+        Resource r = getResource();
+        if (r == null) {
+            throw new MPIllegalStateException("Resource has not been loaded");
+        }
+        return r;
+    }
+
+	@Override
+	public List<EObject> getRoots(String name) throws MPException {
+        Resource r = checkResource();
+		if (MPConstants.ROOT_NAME.equals(name)) {
+			List<EObject> ret = new ArrayList<EObject>(1);
+	        EList<EObject> contents = r.getContents();
+			if (!contents.isEmpty()) {
+                ret.add(contents.get(0));
+	        }
+			return ret;
+		} else if (MPConstants.ROOTS_NAME.equals(name)) {
+	        return r.getContents();
+		}
+
+		throw new MPNoRootNameException(name);
+	}
+
     @Override
     public EPackage.Registry getPackageRegistry() {
         Resource r = getResource();

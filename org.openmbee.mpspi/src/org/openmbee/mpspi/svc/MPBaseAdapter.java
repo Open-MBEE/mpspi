@@ -7,47 +7,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.openmbee.mpspi.MPConstants;
 import org.openmbee.mpspi.exceptions.MPException;
-import org.openmbee.mpspi.exceptions.MPIllegalStateException;
-import org.openmbee.mpspi.exceptions.MPNoRootNameException;
 import org.openmbee.mpspi.exceptions.MPUnsupportedOperationException;
 import org.openmbee.mpspi.modifier.MPModifier;
 import org.openmbee.mpspi.util.MPUtil;
 
 public abstract class MPBaseAdapter extends MPAbstractAdapter {
-    protected Resource checkResource() throws MPIllegalStateException {
-        Resource r = getResource();
-        if (r == null) {
-            throw new MPIllegalStateException("Resource has not been loaded");
-        }
-        return r;
-    }
-
-	@Override
-	public List<EObject> getRoots(String name) throws MPException {
-        Resource r = checkResource();
-		if (MPConstants.ROOT_NAME.equals(name)) {
-			List<EObject> ret = new ArrayList<EObject>(1);
-	        EList<EObject> contents = r.getContents();
-			if (!contents.isEmpty()) {
-                ret.add(contents.get(0));
-	        }
-			return ret;
-		} else if (MPConstants.ROOTS_NAME.equals(name)) {
-	        return r.getContents();
-		}
-
-		throw new MPNoRootNameException(name);
-	}
-
-
     private Map<EStructuralFeature, MPModifier> mpModifierMap = new HashMap<EStructuralFeature, MPModifier>();
 
     public void registerMPModifier(MPModifier modifier) throws MPException {
@@ -225,10 +194,6 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
         }
 	}
 
-    private static boolean isContainementReference(EStructuralFeature feature) {
-        return ((feature instanceof EReference) && ((EReference) feature).isContainment());
-    }
-	
 	@Override
 	public void set(EObject eObj, EStructuralFeature feature, Object value) throws MPException {
         MPModifier m = mpModifierMap.get(feature);
