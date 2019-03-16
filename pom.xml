@@ -5,7 +5,7 @@
   <properties>
     <tycho.version>1.2.0</tycho.version>
     <maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
-    <mpspi.version>0.1.3-SNAPSHOT</mpspi.version>
+    <mpspi.version>0.2.1-SNAPSHOT</mpspi.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
