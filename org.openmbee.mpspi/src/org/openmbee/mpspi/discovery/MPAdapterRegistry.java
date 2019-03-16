@@ -80,7 +80,7 @@ public class MPAdapterRegistry implements ServiceListener {
     }
 
     private MPFactory search(String nsURIStr, URI modelURI) {
-        int priority = MPConstants.PRIORITY_FALLBACK;
+        int priority = MPConstants.PRIORITY_FALLBACK - 1;
         MPFactory factory = null;
         String modelURIStr = uriToStr(modelURI);
 
@@ -147,16 +147,13 @@ public class MPAdapterRegistry implements ServiceListener {
 
         public MPAdapter lookup(EPackage ePkg) {
             MPAdapter a = null;
-            if (ePkg == null) {
-                a = adapterMap.get(null);
-                return a;
-            }
             while (ePkg != null) {
                 a = adapterMap.get(ePkg);
-                if (a != null) break;
+                if (a != null) return a;
                 ePkg = ePkg.getESuperPackage();
             }
-            return a;
+            
+            return adapterMap.get(null);
         }
     }
 
