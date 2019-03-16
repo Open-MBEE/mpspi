@@ -105,13 +105,13 @@ public interface MPAdapter {
 
     EObject instantiate(EClass eClass, Map<EStructuralFeature, Object> inits) throws MPException;
 
-    void add(EObject eObjOwner, EStructuralFeature feature, Object value, int index) throws MPException;
+    void add(EObject eObj, EStructuralFeature feature, Object value, int index) throws MPException;
 
-    void remove(EObject eObjOwner, EStructuralFeature feature, Object eObj) throws MPException;
+    void remove(EObject eObj, EStructuralFeature feature, Object obj) throws MPException;
 
-    void removeByIdx(EObject eObjOwner, EStructuralFeature feature, int index) throws MPException;
+    void removeByIdx(EObject eObj, EStructuralFeature feature, int index) throws MPException;
 
-    void set(EObject eObjOwner, EStructuralFeature feature, Object value) throws MPException;
+    void set(EObject eObj, EStructuralFeature feature, Object value) throws MPException;
 
-    void unset(EObject eObjOwner, EStructuralFeature feature) throws MPException;
+    void unset(EObject eObj, EStructuralFeature feature) throws MPException;
 }
