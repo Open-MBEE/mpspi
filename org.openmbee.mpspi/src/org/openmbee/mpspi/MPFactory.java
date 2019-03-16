@@ -14,7 +14,7 @@ public interface MPFactory {
         public abstract String getNsURIPattern();
 
         public int getPriority() {
-            return MPConstants.PRIORITY_FALLBACK;
+            return MPConstants.PRIORITY_STANDARD;
         }
     }
 
