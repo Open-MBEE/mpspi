@@ -120,10 +120,15 @@ public class MPAdapterRegistry implements ServiceListener {
             return eCls.getEPackage();
         }
 
-        public MPAdapter newAdapter(EPackage ePkg, String nsURI, URI modelURI, MPAdapter parent) throws MPException {
+        private MPAdapter createAdapter(String nsURI, URI modelURI, MPAdapter parent) throws MPException {
             MPFactory factory = search(nsURI, modelURI);
             if (factory == null) return null;
             MPAdapter a = factory.create(nsURI, modelURI, parent);
+            return a;
+        }
+
+        public MPAdapter newAdapter(EPackage ePkg, String nsURI, URI modelURI, MPAdapter parent) throws MPException {
+            MPAdapter a = createAdapter(nsURI, modelURI, parent);
             if (a == null) return null;
             adapterMap.put(ePkg, a);
             return a;
@@ -138,6 +143,25 @@ public class MPAdapterRegistry implements ServiceListener {
         public MPAdapter newAdapter(EPackage ePkg, URI modelURI) throws MPException {
             MPAdapter a = lookup(ePkg);
             return newAdapter(ePkg, ePkg.getNsURI(), modelURI, a);
+        }
+
+        private EPackage registerAdapter(MPAdapter a, String nsURI) {
+            EPackage.Registry reg = a.getPackageRegistry();
+            EPackage ePkg = reg.getEPackage(nsURI);
+            if (ePkg != null) {
+                adapterMap.put(ePkg, a);
+            }
+            return ePkg;
+        }
+
+        public EPackage getEPackage(String nsURI, URI modelURI, MPAdapter parent) {
+            try {
+                MPAdapter a = createAdapter(nsURI, modelURI, parent);
+                if (a == null) return null;
+                return registerAdapter(a, nsURI);
+            } catch (MPException e) {
+                return null;
+            }
         }
 
         public MPAdapter lookup(EObject target) {
