@@ -49,9 +49,11 @@ public abstract class MPAbstractAdapter implements MPAdapter {
     @Override
     public EPackage.Registry getPackageRegistry() {
         Resource r = getResource();
-        ResourceSet rs = r.getResourceSet();
-        EPackage.Registry pr = rs.getPackageRegistry();
-        if (pr != null) return pr;
+        if (r != null) {
+            ResourceSet rs = r.getResourceSet();
+            EPackage.Registry pr = rs.getPackageRegistry();
+            if (pr != null) return pr;
+        }
         return EPackage.Registry.INSTANCE;
     }
 
