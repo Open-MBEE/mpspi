@@ -1,6 +1,7 @@
 package org.openmbee.mpspi.svc;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +46,22 @@ public abstract class MPAbstractAdapter implements MPAdapter {
 
 		throw new MPNoRootNameException(name);
 	}
+
+	@Override
+	public List<EObject> getByEClass(EClass eCls) throws MPException {
+        Resource r = checkResource();
+        List<EObject> results = new ArrayList<EObject>();
+        
+        Iterator<EObject> it = r.getAllContents();
+        while (it.hasNext()) {
+        	EObject eObj = it.next();
+        	if (eCls.isInstance(eObj)) {
+                results.add(eObj);
+            }
+        }
+        
+        return results;
+    }
 
     @Override
     public EPackage.Registry getPackageRegistry() {

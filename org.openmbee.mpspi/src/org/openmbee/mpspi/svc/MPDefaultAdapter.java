@@ -3,13 +3,11 @@ package org.openmbee.mpspi.svc;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -93,13 +91,6 @@ public class MPDefaultAdapter extends MPBaseAdapter {
         Resource r = checkResource();
         r.unload();
         this.resource = null;
-	}
-
-	@Override
-	public List<EObject> getWithType(EClassifier classifier) throws MPException {
-        checkResource();
-		// TODO Need to work
-		return null;
 	}
 
 	@Override

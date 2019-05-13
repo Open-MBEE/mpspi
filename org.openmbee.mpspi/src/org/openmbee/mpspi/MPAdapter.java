@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -97,7 +96,7 @@ public interface MPAdapter {
 
     List<EObject> getRoots(String name) throws MPException;
 
-    List<EObject> getWithType(EClassifier classifier) throws MPException;
+    List<EObject> getByEClass(EClass eCls) throws MPException;
 
     void delete(EObject eObj) throws MPException;
 
@@ -114,4 +113,14 @@ public interface MPAdapter {
     void set(EObject eObj, EStructuralFeature feature, Object value) throws MPException;
 
     void unset(EObject eObj, EStructuralFeature feature) throws MPException;
+
+    /*
+    public interface Agent {
+        String CAPABILITY = "Capability";
+        Serializable get(String methodName) throws MPException;
+        Serializable post(String methodName, Serializable... args) throws MPException;
+    }
+
+    void setAgent(Agent agent);
+    */
 }

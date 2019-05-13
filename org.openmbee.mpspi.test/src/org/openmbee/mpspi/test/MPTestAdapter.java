@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
@@ -54,7 +53,7 @@ public class MPTestAdapter implements MPAdapter {
 	}
 
 	@Override
-	public List<EObject> getWithType(EClassifier classifier) throws MPException {
+	public List<EObject> getByEClass(EClass eCls) throws MPException {
 		return null;
 	}
 

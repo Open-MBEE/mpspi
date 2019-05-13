@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: OpenMBEE Model Persistence Service Provider Interface (MPSPI)
 Bundle-SymbolicName: org.openmbee.mpspi
 Automatic-Module-Name: org.openmbee.mpspi
-Bundle-Version: 0.3.2.qualifier
+Bundle-Version: 0.4.2.qualifier
 Bundle-Vendor: OpenMBEE
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.openmbee.mpspi,
