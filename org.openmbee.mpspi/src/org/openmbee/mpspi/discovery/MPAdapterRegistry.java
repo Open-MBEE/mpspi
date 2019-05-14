@@ -76,7 +76,9 @@ public class MPAdapterRegistry implements ServiceListener {
 
     private static String uriToStr(URI uri) {
         if (uri == null) return null;
-        return uri.trimQuery().toString();
+        String r = uri.trimQuery().toString();
+        if (r.isEmpty()) return null;
+        return r;
     }
 
     private MPFactory search(String nsURIStr, URI modelURI) {
