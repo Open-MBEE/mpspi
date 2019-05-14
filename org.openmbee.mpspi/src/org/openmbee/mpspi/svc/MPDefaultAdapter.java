@@ -1,12 +1,14 @@
 package org.openmbee.mpspi.svc;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -18,9 +20,22 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.FeatureMapUtil;
 import org.openmbee.mpspi.exceptions.MPAccessException;
+import org.openmbee.mpspi.exceptions.MPDataLoadException;
 import org.openmbee.mpspi.exceptions.MPException;
 
 public class MPDefaultAdapter extends MPBaseAdapter {
+    @Override
+    public Serializable getInformation(InformationOption option) throws MPException {
+        switch (option) {
+        case NAME:
+            return "MPSPI Default MPAdapter";
+        case SPECIFICATIONS:
+            return specifications("false,,,XMI Resource");
+        default:
+            return super.getInformation(option);
+        }
+    }
+
     private ResourceSet resourceSet;
 
 	private Resource resource;
@@ -28,10 +43,19 @@ public class MPDefaultAdapter extends MPBaseAdapter {
 	@Override
 	public void load(URI uri, Map<LoadOption, Object> option) throws MPException {
 		this.resourceSet = new ResourceSetImpl();
-		this.resource = resourceSet.getResource(uri, true);
-		if (this.resource == null) {
-			throw new MPAccessException("Failed to load Model: " + uri);
-		}
+        try {
+            this.resource = resourceSet.getResource(uri, true);
+            if (this.resource == null) {
+                throw new MPDataLoadException("Failed to load Model (possibly the model is nonexistent): " + uri);
+            }
+        } catch (WrappedException we) {
+            Exception e = we.exception();
+            if (e instanceof MPException) {
+                throw (MPException) e;
+            } else {
+                throw we;
+            }
+        }
 	}
 
 	@Override

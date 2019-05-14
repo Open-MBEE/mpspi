@@ -1,8 +1,10 @@
 package org.openmbee.mpspi;
 
 import org.openmbee.mpspi.discovery.MPAdapterRegistry;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Version;
 
 public class Activator implements BundleActivator {
 	// The plug-in ID
@@ -10,6 +12,7 @@ public class Activator implements BundleActivator {
 
 	// The shared instance
 	private static Activator plugin;
+	private Bundle bundle;
 
 	/**
 	 * Returns the shared instance
@@ -29,12 +32,23 @@ public class Activator implements BundleActivator {
         context.registerService(MPFactory.class, factory, null);
     }
 
+    public static String getVersionString() {
+        Activator a = getDefault();
+        if (a == null) return null;
+        Bundle b = a.bundle;
+        if (b == null) return null;
+        Version v = b.getVersion();
+        if (v == null) return null;
+        return v.toString();
+    }
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.plugin.AbstractUIPlugin#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
 		Activator.plugin = this;
+        this.bundle = context.getBundle();
         registerMPFactory(context, new org.openmbee.mpspi.svc.MPDefaultFactory());
         this.mpAdapterRegistry = MPAdapterRegistry.newInstance(context);
 	}

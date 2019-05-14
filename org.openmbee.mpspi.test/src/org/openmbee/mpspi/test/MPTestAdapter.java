@@ -1,5 +1,6 @@
 package org.openmbee.mpspi.test;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -89,5 +90,10 @@ public class MPTestAdapter implements MPAdapter {
 
 	@Override
 	public void unset(EObject eObjOwner, EStructuralFeature feature) throws MPException {
+	}
+
+	@Override
+	public Serializable getInformation(InformationOption option) throws MPException {
+		return null;
 	}
 }

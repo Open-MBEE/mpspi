@@ -1,5 +1,6 @@
 package org.openmbee.mpspi;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,25 @@ import org.openmbee.mpspi.exceptions.MPException;
  * @author himi
  */
 public interface MPAdapter {
+    public enum InformationOption {
+        NAME, // String
+        VERSION, // String
+        SPECIFICATIONS, // Specification[]
+    }
+
+    public interface Specification extends Serializable {
+        boolean canAskUsers();
+        String getScheme();
+        String getSuffix();
+        String getDescription();
+    }
+
+    /**
+     * Retrieve the information of the MPAdapter specified by option.
+     * If no information available, it returns null.
+     */
+    Serializable getInformation(InformationOption option) throws MPException;
+
     public enum LoadOption {
         LOCAL,
         LOAD_OPTION1,

@@ -1,9 +1,11 @@
 package org.openmbee.mpspi.svc;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.ServiceConfigurationError;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -28,6 +30,77 @@ public abstract class MPAbstractAdapter implements MPAdapter {
             throw new MPIllegalStateException("Resource has not been loaded");
         }
         return r;
+    }
+
+    protected static class SpecificationImpl implements Specification {
+		private static final long serialVersionUID = 1L;
+		
+		private final boolean askUsers;
+        private final String scheme;
+        private final String suffix;
+        private final String description;
+
+        protected SpecificationImpl(boolean askUsers, String scheme, String suffix, String description) {
+            this.askUsers = askUsers;
+            this.scheme = scheme;
+            this.suffix = suffix;
+            this.description = description;
+        }
+
+		@Override
+		public boolean canAskUsers() {
+			return askUsers;
+		}
+
+		@Override
+		public String getScheme() {
+			return scheme;
+		}
+
+		@Override
+		public String getSuffix() {
+			return suffix;
+		}
+
+		@Override
+		public String getDescription() {
+			return description;
+		}
+    }
+
+    private static String convertSpecificationString(String str) {
+        str = str.trim();
+        if (str.length() == 0) return null;
+        return str;
+    }
+
+    public static Specification specification(String spec) throws MPException {
+        String[] strs = spec.split(",");
+        if (strs.length < 4) throw new ServiceConfigurationError("Spefication String is invalid:" + spec);
+        return new SpecificationImpl(Boolean.parseBoolean(strs[0]),
+                                     convertSpecificationString(strs[1]),
+                                     convertSpecificationString(strs[2]),
+                                     convertSpecificationString(strs[3]));
+    }
+
+    public static Specification[] specifications(String ... specs) throws MPException {
+        Specification[] r = new Specification[specs.length];
+        for (int i = 0; i < specs.length; i++) {
+            r[i] = specification(specs[i]);
+        }
+        return r;
+    }
+
+    @Override
+    public Serializable getInformation(InformationOption option) throws MPException {
+        switch (option) {
+        case NAME:
+            return "MPSPI adapter";
+        case VERSION:
+            return org.openmbee.mpspi.Activator.getVersionString();
+        default:
+            return null;
+        }
     }
 
 	@Override
