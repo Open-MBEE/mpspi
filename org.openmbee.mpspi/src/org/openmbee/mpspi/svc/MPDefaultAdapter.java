@@ -39,6 +39,16 @@ public class MPDefaultAdapter extends MPBaseAdapter {
     private ResourceSet resourceSet;
 
 	private Resource resource;
+	
+	/**
+	 * By default, we use the tracking modification feature of EMF Resource.
+	 * The extended subclass may disable it by setTrackingModification(false).
+	 */
+	private boolean isTrackingModification = true;
+	
+	protected void setTrackingModification(boolean flag) {
+		this.isTrackingModification = flag;
+	}
 
 	@Override
 	public void load(URI uri, Map<LoadOption, Object> option) throws MPException {
@@ -48,6 +58,7 @@ public class MPDefaultAdapter extends MPBaseAdapter {
             if (this.resource == null) {
                 throw new MPDataLoadException("Failed to load Model (possibly the model is nonexistent): " + uri);
             }
+            this.resource.setTrackingModification(isTrackingModification);
         } catch (WrappedException we) {
             Exception e = we.exception();
             if (e instanceof MPException) {
