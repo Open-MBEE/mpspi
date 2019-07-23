@@ -68,8 +68,11 @@ public interface MPAdapter {
      */
     ReloadResult reload() throws MPException;
 
-    public interface UndoResult {
-        // TODO
+    public enum UndoResult {
+    	UNSUPPORTED,
+    	DONE,
+    	ERROR,
+    	NEED_REACTIVATE
     }
 
     /**
@@ -78,6 +81,11 @@ public interface MPAdapter {
      */
     UndoResult undo() throws MPException;
 
+    /**
+     * Store the Transaction used to Undo 
+     * */
+     void storeTransaction() throws MPException;
+    
     /**
      * Return the resource that has been loaded.
      *
@@ -130,9 +138,9 @@ public interface MPAdapter {
 
     void removeByIdx(EObject eObj, EStructuralFeature feature, int index) throws MPException;
 
-    void set(EObject eObj, EStructuralFeature feature, Object value) throws MPException;
+    void set(EObject eObj, EStructuralFeature feature, Object value, Object oldValue) throws MPException;
 
-    void unset(EObject eObj, EStructuralFeature feature) throws MPException;
+    void unset(EObject eObj, EStructuralFeature feature, Object value) throws MPException;
 
     /*
     public interface Agent {

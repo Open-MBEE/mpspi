@@ -174,7 +174,7 @@ public abstract class MPAbstractAdapter implements MPAdapter {
             EStructuralFeature feature = e.getKey();
             if (MPUtil.isVirtual(feature)) continue;
             Object val = e.getValue();
-            doSetForcibly(eObj, feature, val);
+            doSetForcibly(eObj, feature, val, null);
         }
     }
 
@@ -213,16 +213,16 @@ public abstract class MPAbstractAdapter implements MPAdapter {
        We strongly recommend to use these to modify EMF model elements in your MPAdapter
        because it can be extended to support transaction and locking if needed
     ********************************************************************************/
-
-    public void doSet(EObject target, EStructuralFeature feature, Object value) {
+    
+    public void doSet(EObject target, EStructuralFeature feature, Object value, Object oldValue) {
         MPCommand.Set.go(target, feature, value);
     }
 
-    protected void doSetForcibly(EObject target, EStructuralFeature feature, Object value) {
+    protected void doSetForcibly(EObject target, EStructuralFeature feature, Object value, Object oldValue) {
         MPCommand.Set.forcibly(target, feature, value);
     }
 
-    public void doUnset(EObject target, EStructuralFeature feature) {
+    public void doUnset(EObject target, EStructuralFeature feature, Object value) {
         MPCommand.Unset.go(target, feature);
     }
 

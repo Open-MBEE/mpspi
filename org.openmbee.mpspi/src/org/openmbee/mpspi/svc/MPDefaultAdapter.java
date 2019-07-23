@@ -80,6 +80,7 @@ public class MPDefaultAdapter extends MPBaseAdapter {
         } catch (IOException e) {
             throw new MPAccessException("Failed to reload", e);
         }
+        super.clearUndoStack();
         return ReloadResult.NEED_REACTIVATE;
 	}
 
@@ -145,7 +146,7 @@ public class MPDefaultAdapter extends MPBaseAdapter {
             	if (FeatureMapUtil.isMany(eoS, f)) {
             		doRemove(eoS, f, eobj);
             	} else {
-            		doUnset(eoS, f);
+            		doUnset(eoS, f, eobj);
             	}
             }
         }
@@ -158,7 +159,7 @@ public class MPDefaultAdapter extends MPBaseAdapter {
                 	if (FeatureMapUtil.isMany(container, feature)) {
                 		doRemove(container, feature, eobj);
                 	} else {
-                		doUnset(container, feature);
+                		doUnset(container, feature, eobj);
                 	}
                 }
             }

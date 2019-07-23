@@ -11,12 +11,12 @@ import org.openmbee.mpspi.svc.MPBaseAdapter;
 
 public abstract class MPAbstractModifier implements MPModifier {
 	@Override
-    public void set(EObject eObj, EStructuralFeature feature, Object value) throws MPException {
+    public void set(EObject eObj, EStructuralFeature feature, Object value, Object oldValue) throws MPException {
         throw new MPUnsupportedOperationException("set is not implemented: " + this);
     }
 	
 	@Override
-    public void unset(EObject eObj, EStructuralFeature feature) throws MPException {
+    public void unset(EObject eObj, EStructuralFeature feature, Object value) throws MPException {
         throw new MPUnsupportedOperationException("unset is not implemented: " + this);
     }
 
@@ -51,12 +51,12 @@ public abstract class MPAbstractModifier implements MPModifier {
         adapter.registerMPModifier(this);
     }
 
-    protected void doSet(EObject eObj, EStructuralFeature feature, Object value) {
-        adapter.doSet(eObj, feature, value);
+    protected void doSet(EObject eObj, EStructuralFeature feature, Object value, Object oldValue) {
+        adapter.doSet(eObj, feature, value, oldValue);
     }
 
-    protected void doUnset(EObject eObj, EStructuralFeature feature) {
-        adapter.doUnset(eObj, feature);
+    protected void doUnset(EObject eObj, EStructuralFeature feature, Object value) {
+        adapter.doUnset(eObj, feature, value);
     }
 
     protected void doAdd(EObject eObj, EStructuralFeature feature, Object value, int index) {

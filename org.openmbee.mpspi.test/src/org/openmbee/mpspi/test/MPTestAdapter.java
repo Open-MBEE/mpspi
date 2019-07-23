@@ -85,15 +85,20 @@ public class MPTestAdapter implements MPAdapter {
 	}
 
 	@Override
-	public void set(EObject eObjOwner, EStructuralFeature feature, Object value) throws MPException {
+	public void set(EObject eObj, EStructuralFeature feature, Object value, Object oldValue) throws MPException {
 	}
 
 	@Override
-	public void unset(EObject eObjOwner, EStructuralFeature feature) throws MPException {
+	public void unset(EObject eObjOwner, EStructuralFeature feature, Object value ) throws MPException {
 	}
 
 	@Override
 	public Serializable getInformation(InformationOption option) throws MPException {
 		return null;
+	}
+
+	@Override
+	public void storeTransaction() throws MPException {
+		
 	}
 }

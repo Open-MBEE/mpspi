@@ -10,9 +10,9 @@ public interface MPModifier {
 
     Object get(EObject eobj, EStructuralFeature feature) throws MPException;
 
-    void set(EObject obj, EStructuralFeature feature, Object value) throws MPException;
+    void set(EObject obj, EStructuralFeature feature, Object value, Object oldValue) throws MPException;
     
-	void unset(EObject eObj, EStructuralFeature feature) throws MPException;
+	void unset(EObject eObj, EStructuralFeature feature, Object value) throws MPException;
 
 	void add(EObject owner, EStructuralFeature feature, Object value, int index) throws MPException;
 	
