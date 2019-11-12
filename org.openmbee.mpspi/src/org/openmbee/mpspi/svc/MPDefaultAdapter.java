@@ -86,8 +86,7 @@ public class MPDefaultAdapter extends MPBaseAdapter {
 
 	@Override
 	public UndoResult undo() throws MPException {
-		// TODO Need to work
-		return null;
+		return super.undo();
 	}
 
 	@Override

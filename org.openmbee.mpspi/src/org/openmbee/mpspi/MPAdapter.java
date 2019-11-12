@@ -72,7 +72,8 @@ public interface MPAdapter {
     	UNSUPPORTED,
     	DONE,
     	ERROR,
-    	NEED_REACTIVATE
+    	NEED_REACTIVATE,
+    	EMPTY_STACK
     }
 
     /**

@@ -7,13 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
-
 import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.openmbee.mpspi.exceptions.MPAccessException;
 import org.openmbee.mpspi.exceptions.MPException;
+import org.openmbee.mpspi.exceptions.MPUndoException;
 import org.openmbee.mpspi.exceptions.MPUnsupportedOperationException;
 import org.openmbee.mpspi.modifier.MPModifier;
 import org.openmbee.mpspi.util.MPUtil;
@@ -61,14 +60,15 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
 	}
 
 	protected void clearTransaction() {
-		mpCommandLog.clear();
+		if (mpCommandLog != null)
+			mpCommandLog.clear();
 	}
 
 	/**
 	 * This Function add the mpCommadLog to undo stack if it's not empty
 	 **/
 	protected void addUndoLog() {
-		if (!mpCommandLog.isEmpty()) {
+		if (undoCommandLog != null && !mpCommandLog.isEmpty()) {
 			List<MPCommand> commands = new ArrayList<MPCommand>();
 			commands.addAll(mpCommandLog);
 			undoCommandLog.add(commands);
@@ -80,8 +80,9 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
 	 */
 	@Override
 	public void storeTransaction() {
-		if (!undoCommandLog.isEmpty()) {
+		if (undoCommandLog != null && !undoCommandLog.isEmpty()) {
 			undoLogs.push(undoCommandLog);
+			// don't clear assign to new stack
 			undoCommandLog = new Stack<List<MPCommand>>();
 		}
 	}
@@ -97,22 +98,23 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
 	}
 
 	public UndoResult undo() throws MPException {
-		Stack<List<MPCommand>> undoLog = undoLogs.pop();
+		if (undoLogs.isEmpty())
+			return UndoResult.EMPTY_STACK;
+
 		try {
+			Stack<List<MPCommand>> undoLog = undoLogs.pop();
 			while (!undoLog.isEmpty()) {
 				List<MPCommand> undo = undoLog.pop();
 				for (MPCommand mpCommand : undo) {
 					mpCommand.undo();
 				}
 			}
+			return UndoResult.DONE;
 		} catch (Exception e) {
-			// TODO Exception need to be changed we should not catch all exception on fatal
-			// exception from which we cann't recover
 			// clear the undo stack and throw exception
 			clearUndoStack();
-			throw new MPAccessException("Unable to revert the changes" + e);
+			throw new MPUndoException("Unable to revert the command, Plese reload the model" + e);
 		}
-		return UndoResult.DONE;
 	}
 
 	public void doSet(EObject target, EStructuralFeature feature, Object value, Object oldValue) {
