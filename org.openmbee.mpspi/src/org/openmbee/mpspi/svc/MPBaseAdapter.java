@@ -1,12 +1,15 @@
 package org.openmbee.mpspi.svc;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -35,7 +38,7 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
 	/** it will clear after completing the whole transaction */
 	private Stack<List<MPCommand>> undoCommandLog;
 
-	private List<MPCommand> mpCommandLog;
+	private Collection<MPCommand> mpCommandLog;
 
 	private boolean isTransactionEnabled() {
 		return (mpCommandLog != null);
@@ -43,7 +46,7 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
 
 	protected void setTransaction(boolean flag) {
 		if (flag) {
-			mpCommandLog = new ArrayList<MPCommand>();
+			mpCommandLog =  new ConcurrentLinkedQueue<MPCommand>();//new ArrayList<MPCommand>();
 			undoCommandLog = new Stack<List<MPCommand>>();
 		} else {
 			mpCommandLog = null;
@@ -91,7 +94,7 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
 		undoLogs.clear();
 	}
 
-	protected void commit() throws MPException {
+	protected synchronized void commit() throws MPException {
 		for (MPCommand mpc : mpCommandLog) {
 			mpc.execute();
 		}
@@ -113,7 +116,7 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
 		} catch (Exception e) {
 			// clear the undo stack and throw exception
 			clearUndoStack();
-			throw new MPUndoException("Unable to revert the command, Plese reload the model" + e);
+			throw new MPUndoException("Unable to revert, Please reload the model without saving." , e);
 		}
 	}
 
