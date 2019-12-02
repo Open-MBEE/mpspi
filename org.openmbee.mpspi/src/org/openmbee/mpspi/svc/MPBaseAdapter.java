@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EObject;
@@ -46,7 +45,7 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
 
 	protected void setTransaction(boolean flag) {
 		if (flag) {
-			mpCommandLog =  new ConcurrentLinkedQueue<MPCommand>();//new ArrayList<MPCommand>();
+			mpCommandLog =  new ArrayList<MPCommand>();
 			undoCommandLog = new Stack<List<MPCommand>>();
 		} else {
 			mpCommandLog = null;
@@ -94,7 +93,7 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
 		undoLogs.clear();
 	}
 
-	protected synchronized void commit() throws MPException {
+	protected void commit() throws MPException {
 		for (MPCommand mpc : mpCommandLog) {
 			mpc.execute();
 		}
