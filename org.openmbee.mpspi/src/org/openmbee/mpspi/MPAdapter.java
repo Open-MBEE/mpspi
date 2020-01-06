@@ -139,6 +139,8 @@ public interface MPAdapter {
 
     void removeByIdx(EObject eObj, EStructuralFeature feature, int index) throws MPException;
 
+    void set(EObject eObj, EStructuralFeature feature, Object value) throws MPException;
+
     void set(EObject eObj, EStructuralFeature feature, Object value, Object oldValue) throws MPException;
 
     void unset(EObject eObj, EStructuralFeature feature, Object value) throws MPException;

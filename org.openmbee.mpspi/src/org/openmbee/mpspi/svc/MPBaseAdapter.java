@@ -272,6 +272,19 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
 	}
 
 	@Override
+	public void set(EObject eObj, EStructuralFeature feature, Object value) throws MPException {
+        Object oldValue = get(eObj, feature);
+		MPModifier m = mpModifierMap.get(feature);
+		if (m != null) {
+			m.set(eObj, feature, value, oldValue);
+		} else {
+			if (MPUtil.isVirtual(feature))
+				return;
+			doSet(eObj, feature, value, oldValue);
+		}
+	}
+
+	@Override
 	public void unset(EObject eObj, EStructuralFeature feature, Object value) throws MPException {
 		MPModifier m = mpModifierMap.get(feature);
 		if (m != null) {
