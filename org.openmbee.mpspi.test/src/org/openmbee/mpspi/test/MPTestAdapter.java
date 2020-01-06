@@ -85,10 +85,6 @@ public class MPTestAdapter implements MPAdapter {
 	}
 
 	@Override
-	public void set(EObject eObj, EStructuralFeature feature, Object value, Object oldValue) throws MPException {
-	}
-	
-	@Override
 	public void set(EObject eObj, EStructuralFeature feature, Object value) throws MPException {
 		// TODO Auto-generated method stub
 		
