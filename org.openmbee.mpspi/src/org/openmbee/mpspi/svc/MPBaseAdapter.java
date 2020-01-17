@@ -142,7 +142,7 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
 		} catch (Exception e) {
 			// clear the redo stack and throw exception
 			clearRedoStack();
-			throw new MPRedoException("Unable to bring back, Please reload the model without saving." , e);
+			throw new MPRedoException("Unable to perform redo operation, Please reload the model without saving." , e);
 		}
 	}
 	
