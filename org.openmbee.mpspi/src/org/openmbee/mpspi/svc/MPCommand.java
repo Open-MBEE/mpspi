@@ -72,7 +72,7 @@ public abstract class MPCommand {
 
 		@Override
 		public void undo() {
-			if (!isFirstValue) {
+			if (isFirstValue) {
 				target.eUnset(feature);
 			} else {
 				go(target, feature, oldValue);

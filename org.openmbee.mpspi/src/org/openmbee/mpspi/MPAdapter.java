@@ -87,6 +87,20 @@ public interface MPAdapter {
      * */
      void storeTransaction() throws MPException;
     
+     
+     public enum RedoResult {
+     	UNSUPPORTED,
+     	DONE,
+     	ERROR,
+     	NEED_REACTIVATE,
+     	EMPTY_STACK
+     }
+     
+     /**
+      * Revert the last undo transaction
+      * */
+     RedoResult redo() throws MPException;
+     
     /**
      * Return the resource that has been loaded.
      *

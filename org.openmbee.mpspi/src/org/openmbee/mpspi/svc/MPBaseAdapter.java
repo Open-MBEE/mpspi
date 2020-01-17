@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.openmbee.mpspi.exceptions.MPException;
+import org.openmbee.mpspi.exceptions.MPRedoException;
 import org.openmbee.mpspi.exceptions.MPUndoException;
 import org.openmbee.mpspi.exceptions.MPUnsupportedOperationException;
 import org.openmbee.mpspi.modifier.MPModifier;
@@ -99,18 +100,21 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
 		}
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public UndoResult undo() throws MPException {
 		if (undoLogs.isEmpty())
 			return UndoResult.EMPTY_STACK;
 
 		try {
 			Stack<List<MPCommand>> undoLog = undoLogs.pop();
+			Object redoObject = undoLog.clone();
 			while (!undoLog.isEmpty()) {
 				List<MPCommand> undo = undoLog.pop();
 				for (MPCommand mpCommand : undo) {
 					mpCommand.undo();
 				}
 			}
+			redoStack.add((Stack)redoObject);
 			return UndoResult.DONE;
 		} catch (Exception e) {
 			// clear the undo stack and throw exception
@@ -119,6 +123,35 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
 		}
 	}
 
+	
+	private Stack<Stack<List<MPCommand>>> redoStack = new Stack<Stack<List<MPCommand>>>();;
+	
+	@Override
+	public RedoResult redo() throws MPException {
+		if (redoStack.isEmpty()) 
+			return RedoResult.EMPTY_STACK;
+		try {
+			Stack<List<MPCommand>> redoLog = redoStack.pop();
+			while (!redoLog.isEmpty()) {
+				List<MPCommand> redo = redoLog.pop();
+				for (MPCommand mpCommand : redo) {
+					mpCommand.execute();
+				}
+			}
+			return RedoResult.DONE;
+		} catch (Exception e) {
+			// clear the redo stack and throw exception
+			clearRedoStack();
+			throw new MPRedoException("Unable to bring back, Please reload the model without saving." , e);
+		}
+	}
+	
+	private void clearRedoStack() {
+		redoStack.clear();
+	}
+	
+	
+	
 	public void doSet(EObject target, EStructuralFeature feature, Object value, Object oldValue) {
 		if (isTransactionEnabled()) {
 			mpCommandLog.add(new MPCommand.Set(target, feature, value, oldValue, false));
