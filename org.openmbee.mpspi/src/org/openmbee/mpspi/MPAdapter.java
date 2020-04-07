@@ -62,19 +62,17 @@ public interface MPAdapter {
     	NEED_REACTIVATE
     }
 
+    public enum DoResult implements UndoResult, RedoResult {
+		UNSUPPORTED, DONE, ERROR, NEED_REACTIVATE, EMPTY_STACK
+	}
+    
     /**
      * reload the model
      * @throws MPException
      */
     ReloadResult reload() throws MPException;
-
-    public enum UndoResult {
-    	UNSUPPORTED,
-    	DONE,
-    	ERROR,
-    	NEED_REACTIVATE,
-    	EMPTY_STACK
-    }
+    
+	public interface UndoResult {}
 
     /**
      * reload the last modification
@@ -87,14 +85,8 @@ public interface MPAdapter {
      * */
      void storeTransaction() throws MPException;
     
-     
-     public enum RedoResult {
-     	UNSUPPORTED,
-     	DONE,
-     	ERROR,
-     	NEED_REACTIVATE,
-     	EMPTY_STACK
-     }
+ 	public interface RedoResult {}
+
      
      /**
       * Revert the last undo transaction

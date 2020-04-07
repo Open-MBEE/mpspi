@@ -103,7 +103,7 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public UndoResult undo() throws MPException {
 		if (undoLogs.isEmpty())
-			return UndoResult.EMPTY_STACK;
+			return DoResult.EMPTY_STACK;
 
 		try {
 			Stack<List<MPCommand>> undoLog = undoLogs.pop();
@@ -115,7 +115,7 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
 				}
 			}
 			redoStack.add((Stack)redoObject);
-			return UndoResult.DONE;
+			return DoResult.DONE;
 		} catch (Exception e) {
 			// clear the undo stack and throw exception
 			clearUndoStack();
@@ -129,7 +129,7 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
 	@Override
 	public RedoResult redo() throws MPException {
 		if (redoStack.isEmpty()) 
-			return RedoResult.EMPTY_STACK;
+			return DoResult.EMPTY_STACK;
 		try {
 			Stack<List<MPCommand>> redoLog = redoStack.pop();
 			while (!redoLog.isEmpty()) {
@@ -138,7 +138,7 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
 					mpCommand.execute();
 				}
 			}
-			return RedoResult.DONE;
+			return DoResult.DONE;
 		} catch (Exception e) {
 			// clear the redo stack and throw exception
 			clearRedoStack();
