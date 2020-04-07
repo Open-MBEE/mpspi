@@ -5,3 +5,5 @@ Service providers implementing this SPI are called "adapters."   Each adapter ac
 
 ## License
 This project is developed and distributed under Apache 2.0 or Eclipse Public License (EPL) 2.0.  If you use any results of this project, you can choose one of these licenses.
+
+`SPDX-License-Identifier: EPL-2.0 OR Apache-2.0`
