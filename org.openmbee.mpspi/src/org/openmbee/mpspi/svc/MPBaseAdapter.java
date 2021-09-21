@@ -46,7 +46,7 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
 
 	protected void setTransaction(boolean flag) {
 		if (flag) {
-			mpCommandLog =  new ArrayList<MPCommand>();
+			mpCommandLog = new ArrayList<MPCommand>();
 			undoCommandLog = new Stack<List<MPCommand>>();
 		} else {
 			mpCommandLog = null;
@@ -98,6 +98,7 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
 		for (MPCommand mpc : mpCommandLog) {
 			mpc.execute();
 		}
+		redoStack.clear();
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -114,44 +115,54 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
 					mpCommand.undo();
 				}
 			}
-			redoStack.add((Stack)redoObject);
+			redoStack.add((Stack) redoObject);
 			return DoResult.DONE;
 		} catch (Exception e) {
 			// clear the undo stack and throw exception
 			clearUndoStack();
-			throw new MPUndoException("Unable to revert, Please reload the model without saving." , e);
+			throw new MPUndoException("Unable to revert, Please reload the model without saving.", e);
 		}
 	}
 
-	
 	private Stack<Stack<List<MPCommand>>> redoStack = new Stack<Stack<List<MPCommand>>>();;
-	
+
 	@Override
 	public RedoResult redo() throws MPException {
-		if (redoStack.isEmpty()) 
+		if (redoStack.isEmpty())
 			return DoResult.EMPTY_STACK;
 		try {
 			Stack<List<MPCommand>> redoLog = redoStack.pop();
+			Object tmp = redoLog.clone();
+			Stack<List<MPCommand>> undoObject = null;
+			if (tmp instanceof Stack<?>) {
+				@SuppressWarnings("unchecked")
+				// This cast is safe as it keeps the same type used internally
+				Stack<List<MPCommand>> tmp2 = (Stack<List<MPCommand>>) tmp;
+				undoObject = tmp2;
+			}
+
+			if (undoObject == null)
+				throw new IllegalStateException();
+
 			while (!redoLog.isEmpty()) {
 				List<MPCommand> redo = redoLog.pop();
 				for (MPCommand mpCommand : redo) {
 					mpCommand.execute();
 				}
 			}
+			undoLogs.push(undoObject);
 			return DoResult.DONE;
 		} catch (Exception e) {
 			// clear the redo stack and throw exception
 			clearRedoStack();
-			throw new MPRedoException("Unable to perform redo operation, Please reload the model without saving." , e);
+			throw new MPRedoException("Unable to perform redo operation, Please reload the model without saving.", e);
 		}
 	}
-	
+
 	private void clearRedoStack() {
 		redoStack.clear();
 	}
-	
-	
-	
+
 	public void doSet(EObject target, EStructuralFeature feature, Object value, Object oldValue) {
 		if (isTransactionEnabled()) {
 			mpCommandLog.add(new MPCommand.Set(target, feature, value, oldValue, false));
@@ -296,12 +307,12 @@ public abstract class MPBaseAdapter extends MPAbstractAdapter {
 	public void set(EObject eObj, EStructuralFeature feature, Object value) throws MPException {
 		MPModifier m = mpModifierMap.get(feature);
 		if (m != null) {
-            Object oldValue = get(eObj, feature);
+			Object oldValue = get(eObj, feature);
 			m.set(eObj, feature, value, oldValue);
 		} else {
 			if (MPUtil.isVirtual(feature))
 				return;
-            Object oldValue = get(eObj, feature);
+			Object oldValue = get(eObj, feature);
 			doSet(eObj, feature, value, oldValue);
 		}
 	}
